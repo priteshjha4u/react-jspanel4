@@ -16,16 +16,18 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/priteshjha4u/react-jsPanel4"
+    "url": "https://github.com/priteshjha4u/react-jspanel4"
   },
-  "homepage": "https://priteshjha4u.github.io/react-jsPanel4",
+  "homepage": "https://priteshjha4u.github.io/react-jspanel4",
   "description": "This app is just a playgroud to see how jsPanel4 js library can be integrated along with React JS",
   "browserslist": [
     ">0.2%",
