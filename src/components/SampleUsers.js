@@ -5,21 +5,18 @@ class SampleUsers extends Component {
   state = {
     users: []
   };
+  isUnmounted = false;
 
   componentDidMount() {
     fetchSampleUsers().then(data => {
-      this.setState({ users: data });
-      this.props.jsPanel.resize({
-        width: function() {
-          const minus = (window.innerWidth * 20) / 100;
-          return window.innerWidth - minus;
-        },
-        height: function() {
-          const minus = (window.innerHeight * 20) / 100;
-          return window.innerHeight - minus;
-        }
-      });
+      if (this && !this.isUnmounted) {
+        this.setState({ users: data });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.isUnmounted = true;
   }
 
   render() {

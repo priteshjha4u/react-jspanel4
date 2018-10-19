@@ -50,25 +50,26 @@ class TodoApp extends Component {
     const noItems = !this.state.data.length ? <div className="alert alert-danger">Your task list is empty.</div> : null;
     const taskDone = (() => {
       let d = this.state.data.filter(o => o.done === 'true');
-      return d.length ? (
-        <span className="btn btn-success float-right" style={{ marginRight: '5px' }}>
+      return (
+        <span className="btn btn-success float-right">
           {'Done '}
           <span className="badge badge-light">{d.length}</span>
         </span>
-      ) : null;
+      );
     })();
     return (
       <div className="card">
-        <div className="card-header">
-          <h5 className="card-title">
-            {'Todo App'}
-            <span className="float-right btn btn-info">
-              {'Total Task '}
-              <span className="badge badge-light"> {this.state.data.length}</span>
-            </span>
-            {taskDone}
-          </h5>
-        </div>
+        {this.state.data.length ? (
+          <div className="card-header">
+            <h5 className="card-title">
+              <span className="btn btn-info">
+                {'Total '}
+                <span className="badge badge-light"> {this.state.data.length}</span>
+              </span>
+              {taskDone}
+            </h5>
+          </div>
+        ) : null}
         <div className="card-body">
           {noItems}
           <ul className="list-group">{todoList}</ul>

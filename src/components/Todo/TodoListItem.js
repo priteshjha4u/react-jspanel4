@@ -44,7 +44,7 @@ class TodoListItem extends Component {
   changeTaskName(e) {
     e.preventDefault();
     if (this.props.data.text === this.state.taskName) {
-      return;
+      return this.setState({ tNameEdit: false, err: false, errorMsg: '' });
     }
     this.setState({ tNameEdit: false, err: false, errorMsg: '' });
     this.props.clickHandler(this.props.data.id, true, this.state.taskName);
@@ -58,14 +58,13 @@ class TodoListItem extends Component {
     let v = e.target.value,
       reg = /^[a-z\d\-_\s]+$/i,
       errM = '';
-    !v.length && (errM = 'Task name is required.');
-    v.length > 30 && (errM = 'Task name should be less than 30 char.');
-    !reg.test(v) && v.length && (errM = 'Task name should not contain special characters.');
+    v.length > 30 && (errM = 'Only 30 chars.');
+    !reg.test(v) && v.length && (errM = 'No special characters.') && (v = v.substr(0, v.length - 1));
     if (errM) {
       this.setState({ taskName: v, errorMsg: errM, err: true });
       setTimeout(() => {
-        this.state.errorMsg && this.setState({ errorMsg: '' });
-      }, 5000);
+        this.setState({ errorMsg: '', err: false });
+      }, 4000);
       return;
     }
     this.setState({ taskName: v, err: false, errorMsg: '' });
@@ -75,26 +74,26 @@ class TodoListItem extends Component {
     const icon = this.iconsStyle;
     const { showControls } = this.state;
     if (this.state.tNameEdit) {
-      const errblock = this.state.errorMsg ? (
-        <div className="alert alert-danger" style={{ marginTop: '5px', width: '50%' }}>
-          {this.state.errorMsg}
-        </div>
-      ) : null;
+      const errblock = this.state.errorMsg ? <div className="alert alert-danger mt-2">{this.state.errorMsg}</div> : null;
       return (
-        <li className="list-group-item">
-          <form className="form-inline" onSubmit={this.changeTaskName}>
-            <div className={!this.state.err ? 'form-group' : 'form-group has-error'}>
-              <input type="text" className="form-control" value={this.state.taskName} onChange={this.editInputChanged.bind(this)} />
-            </div>
-            <button className="btn btn-primary leftBtn" type="submit" disabled={!this.state.taskName || this.state.err}>
-              OK
-            </button>
-            <span className="btn btn-primary leftBtn" onClick={this.cancelTaskNameEditing.bind(this)}>
-              Cancel
-            </span>
-          </form>
-          {errblock}
-        </li>
+        <div>
+          <li className="list-group-item">
+            <form className="form-inline" onSubmit={this.changeTaskName}>
+              <div className="input-group">
+                <input type="text" className="form-control" value={this.state.taskName} onChange={this.editInputChanged.bind(this)} />
+                <div className="input-group-append" id="button-addon4">
+                  <button className="btn btn-outline-success" type="submit" disabled={!this.state.taskName || this.state.err}>
+                    <img src={check} style={{ width: '20px', height: '20px', cursor: 'pointer' }} alt="Ok" />
+                  </button>
+                  <button className="btn btn-outline-danger" type="button" onClick={this.cancelTaskNameEditing.bind(this)}>
+                    <img src={_delete} style={{ width: '20px', height: '20px', cursor: 'pointer' }} alt="Cancel" />
+                  </button>
+                </div>
+              </div>
+            </form>
+          </li>
+          <div className="row justify-content-center align-items-center">{errblock}</div>
+        </div>
       );
     }
     const t = this.props.data,
@@ -108,7 +107,7 @@ class TodoListItem extends Component {
         <b>
           <span className="float-left">{h}.</span>
           <span className="rmv" title={t.text.length > 25 ? t.text : ''}>
-            {t.text.length > 25 ? t.text.substr(0, 25) + '..' : t.text}
+            {t.text.length > 25 ? t.text.substr(0, 25) + '.. ' : t.text}
           </span>
         </b>
         {removebtn}
