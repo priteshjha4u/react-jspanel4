@@ -5,15 +5,21 @@ class Countries extends Component {
   state = {
     list: []
   };
-
+  timeout = null;
   componentDidMount() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
+      if (this.timeout) {
+        this.timeout = null;
+      }
       this.setState({ list: ['India', 'USA', 'China', 'Thailand', 'Indonesia', 'Netherlands'] });
     }, 4000);
   }
 
   componentWillUnmount() {
-    console.log('Countries component unmounted.');
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      console.log(`Countries component timeout with id ${this.timeout} cleared!`);
+    }
   }
 
   render() {

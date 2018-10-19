@@ -8,6 +8,8 @@ import DisplayName from './components/DisplayName';
 import Countries from './components/Countries';
 import TodoApp from './components/Todo/TodoApp';
 import SampleUsers from './components/SampleUsers';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 // Main/Top level React component
 class App extends Component {
@@ -16,6 +18,14 @@ class App extends Component {
     this.state = {
       panels: []
     };
+  }
+
+  componentDidMount() {
+    try {
+      document.body.style.overflow = 'hidden';
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 
   // Method that will create jsPanel on demand, right now to keep it simple, we are configuring jsPanel options inside the method statically
@@ -29,7 +39,16 @@ class App extends Component {
       theme: 'primary',
       headerTitle: e.target.id.trim(),
       position: 'center-top 0 58',
-      contentSize: '600 500',
+      contentSize: {
+        width: function() {
+          const minus = (window.innerWidth * 20) / 100;
+          return window.innerWidth - minus;
+        },
+        height: 'auto'
+      },
+      contentOverflow: 'auto',
+      animateIn: 'jsPanelFadeIn',
+      onwindowresize: true,
       content: function() {
         // this function is where we are actually mounting a react component on runtime inside jsPanel content
         const div = document.createElement('div');
@@ -41,16 +60,16 @@ class App extends Component {
         const node = document.getElementById(newId);
 
         if (action === 'Display Name') {
-          ReactDOM.render(<DisplayName name="Pritesh Jha" />, node);
+          ReactDOM.render(<DisplayName name="Pritesh Jha" jsPanel={this} />, node);
         }
         if (action === 'Countries List') {
-          ReactDOM.render(<Countries />, node);
+          ReactDOM.render(<Countries jsPanel={this} />, node);
         }
         if (action === 'Todo List') {
-          ReactDOM.render(<TodoApp />, node);
+          ReactDOM.render(<TodoApp jsPanel={this} />, node);
         }
         if (action === 'Sample Users') {
-          ReactDOM.render(<SampleUsers />, node);
+          ReactDOM.render(<SampleUsers jsPanel={this} />, node);
         }
       },
       callback: function() {
@@ -75,6 +94,9 @@ class App extends Component {
         if (index > -1) {
           appPanels.splice(index, 1);
           app.setState({ panels: appPanels });
+          /* toast.success(`jsPanel with ID: ${this.id} closed! `, {
+            position: toast.POSITION.BOTTOM_CENTER
+          }); */
         }
       }
     });
@@ -89,18 +111,27 @@ class App extends Component {
         </header>
         <p className="App-intro">Here we are trying to combine and show how jsPanel4 can be integrated with React JS without altering jspanel4 library.</p>
         <hr />
-        <button className="btn btn-primary" onClick={this.createJsPanel} id="Display Name">
-          Display Name
-        </button>
-        <button className="btn btn-primary" onClick={this.createJsPanel} id="Countries List" style={{ marginLeft: '10px' }}>
-          Countries list
-        </button>
-        <button className="btn btn-primary" onClick={this.createJsPanel} id="Todo List" style={{ marginLeft: '10px' }}>
-          Todo List
-        </button>
-        <button className="btn btn-primary" onClick={this.createJsPanel} id="Sample Users" style={{ marginLeft: '10px' }}>
-          Sample Users
-        </button>
+        <div className="row h-100 justify-content-center align-items-center">
+          <div className="card">
+            <div className="card-body">
+              <button className="btn btn-outline-primary ml-2" type="button" onClick={this.createJsPanel} id="Display Name">
+                Display Name
+              </button>
+              <button className="btn btn-outline-primary ml-2" type="button" onClick={this.createJsPanel} id="Countries List">
+                Countries list
+              </button>
+              <button className="btn btn-outline-primary ml-2" type="button" onClick={this.createJsPanel} id="Todo List">
+                Todo List
+              </button>
+              <button className="btn btn-outline-primary ml-2" type="button" onClick={this.createJsPanel} id="Sample Users">
+                Sample Users
+              </button>
+            </div>
+          </div>
+        </div>
+        {/* <div className="row">
+          <ToastContainer />
+        </div> */}
       </div>
     );
   }

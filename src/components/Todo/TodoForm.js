@@ -39,12 +39,12 @@ class TodoForm extends Component {
       </div>
     ) : null;
     return (
-      <div>
+      <div className="row justify-content-center align-items-center">
         <form className="form-inline" onSubmit={this.handleFormSubmit}>
           <div className="form-group">
             <input type="text" className="form-control" id="tname" placeholder="What to do?" value={this.state.tname} onChange={this.tnameChange} style={{ marginLeft: '40px' }} />
           </div>
-          <button type="submit" className="btn btn-success" style={{ marginLeft: '10px' }} disabled={!this.state.tname || this.state.error}>
+          <button type="submit" className="btn btn-success ml-2" disabled={!this.state.tname || this.state.error}>
             Add
           </button>
         </form>

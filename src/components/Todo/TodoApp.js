@@ -73,7 +73,7 @@ class TodoApp extends Component {
           {noItems}
           <ul className="list-group">{todoList}</ul>
         </div>
-        <div className="card-footer" style={{ textAlign: 'center' }}>
+        <div className="card-footer">
           <TodoForm formsubmit={this.handleFormSubmit} />
         </div>
       </div>

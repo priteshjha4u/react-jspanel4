@@ -9,6 +9,16 @@ class SampleUsers extends Component {
   componentDidMount() {
     fetchSampleUsers().then(data => {
       this.setState({ users: data });
+      this.props.jsPanel.resize({
+        width: function() {
+          const minus = (window.innerWidth * 20) / 100;
+          return window.innerWidth - minus;
+        },
+        height: function() {
+          const minus = (window.innerHeight * 20) / 100;
+          return window.innerHeight - minus;
+        }
+      });
     });
   }
 
