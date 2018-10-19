@@ -20,23 +20,23 @@ self.__precacheManifest = [
     "url": "/react-jspanel4/static/js/runtime~main.93356006.js"
   },
   {
-    "revision": "9dfbfdb5895b9de3c1ac",
-    "url": "/react-jspanel4/static/js/main.9dfbfdb5.chunk.js"
+    "revision": "83ba5e5318c08df8cc2c",
+    "url": "/react-jspanel4/static/js/main.83ba5e53.chunk.js"
   },
   {
-    "revision": "d227fda96c9dff0de73e",
-    "url": "/react-jspanel4/static/js/1.d227fda9.chunk.js"
+    "revision": "b418328998e41162b886",
+    "url": "/react-jspanel4/static/js/1.b4183289.chunk.js"
   },
   {
-    "revision": "9dfbfdb5895b9de3c1ac",
-    "url": "/react-jspanel4/static/css/main.c3ce5a2a.chunk.css"
+    "revision": "83ba5e5318c08df8cc2c",
+    "url": "/react-jspanel4/static/css/main.936248b0.chunk.css"
   },
   {
-    "revision": "d227fda96c9dff0de73e",
-    "url": "/react-jspanel4/static/css/1.13c739ce.chunk.css"
+    "revision": "b418328998e41162b886",
+    "url": "/react-jspanel4/static/css/1.ba458ade.chunk.css"
   },
   {
-    "revision": "0a30a2a34cbd197812b4a69696677065",
+    "revision": "3ef597bafb81b873d2b16df5fa33613f",
     "url": "/react-jspanel4/index.html"
   }
 ];
