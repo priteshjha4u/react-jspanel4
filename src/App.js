@@ -8,6 +8,7 @@ import DisplayName from './components/DisplayName';
 import Countries from './components/Countries';
 import TodoApp from './components/Todo/TodoApp';
 import SampleUsers from './components/SampleUsers';
+import RandomImage from './components/RandomImage';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,6 +23,12 @@ class App extends Component {
 
   componentDidMount() {
     this.bodyOverflowHidden();
+  }
+
+  componentWillMount() {
+    window.addEventListener('fetch', function(event) {
+      console.log('Fetch request: ', event.request.url);
+    });
   }
 
   bodyOverflowHidden = () => {
@@ -82,6 +89,9 @@ class App extends Component {
         if (action === 'Sample Users') {
           ReactDOM.render(<SampleUsers jsPanel={this} />, node);
         }
+        if (action === 'Random Image') {
+          ReactDOM.render(<RandomImage jsPanel={this} />, node);
+        }
       },
       callback: function() {
         this.content.style.padding = '10px';
@@ -141,6 +151,9 @@ class App extends Component {
               </button>
               <button className="btn btn-outline-primary ml-2 mb-2" type="button" onClick={this.createJsPanel} id="Sample Users">
                 Sample Users
+              </button>
+              <button className="btn btn-outline-primary ml-2 mb-2" type="button" onClick={this.createJsPanel} id="Random Image">
+                Random Image
               </button>
             </div>
           </div>
