@@ -56,8 +56,8 @@ class App extends Component {
         app.state.panels[action].reposition('center-top 0 20%');
       });
     }
-    // create the jsPanel here
-    jsPanel.create({
+
+    const options = {
       theme: 'primary',
       headerTitle: e.target.id.trim(),
       position: 'center-top 0 20%',
@@ -119,12 +119,14 @@ class App extends Component {
           delete appPanels[action];
           app.setState({ panels: { ...appPanels } });
           /* toast.success(`jsPanel with ID: ${this.id} closed! `, {
-            position: toast.POSITION.BOTTOM_CENTER
-          }); */
+			  position: toast.POSITION.BOTTOM_CENTER
+			}); */
         }
         setTimeout(app.bodyOverflowHidden, 50);
       }
-    });
+    };
+    // create the jsPanel here
+    jsPanel.create(options);
   };
 
   render() {
