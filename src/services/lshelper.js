@@ -1,13 +1,6 @@
-const lsPrefix = 'todoAppStorage';
+import uuid from 'uuid/v4';
 
-const uuid = () =>
-  '_' +
-  Math.random()
-    .toString(36)
-    .substring(3) +
-  Math.random()
-    .toString(36)
-    .substring(10);
+const lsPrefix = 'todoAppStorage';
 
 const localStorageExists = (() => typeof localStorage === 'object')();
 

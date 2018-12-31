@@ -9,6 +9,7 @@ import Countries from './components/Countries';
 import TodoApp from './components/Todo/TodoApp';
 import SampleUsers from './components/SampleUsers';
 import RandomImage from './components/RandomImage';
+import ActionButton from './components/ActionButton';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -142,21 +143,21 @@ class App extends Component {
         <div className="row h-100 justify-content-center align-items-center">
           <div className="card">
             <div className="card-body">
-              <button className="btn btn-outline-primary ml-2 mb-2" type="button" onClick={this.createJsPanel} id="Display Name">
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Display Name">
                 Display Name
-              </button>
-              <button className="btn btn-outline-primary ml-2 mb-2" type="button" onClick={this.createJsPanel} id="Countries List">
+              </ActionButton>
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id=" Countries list">
                 Countries list
-              </button>
-              <button className="btn btn-outline-primary ml-2 mb-2" type="button" onClick={this.createJsPanel} id="Todo App">
-                Todo List
-              </button>
-              <button className="btn btn-outline-primary ml-2 mb-2" type="button" onClick={this.createJsPanel} id="Sample Users">
+              </ActionButton>
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Todo App">
+                Todo App
+              </ActionButton>
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Sample Users">
                 Sample Users
-              </button>
-              <button className="btn btn-outline-primary ml-2 mb-2" type="button" onClick={this.createJsPanel} id="Random Image">
+              </ActionButton>
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Random Image">
                 Random Image
-              </button>
+              </ActionButton>
             </div>
           </div>
         </div>
