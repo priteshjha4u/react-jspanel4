@@ -26,12 +26,6 @@ class App extends Component {
     this.bodyOverflowHidden();
   }
 
-  componentWillMount() {
-    window.addEventListener('fetch', function(event) {
-      console.log('Fetch request: ', event.request.url);
-    });
-  }
-
   bodyOverflowHidden = () => {
     try {
       document.body.style.overflow = 'hidden';
@@ -72,7 +66,7 @@ class App extends Component {
       content: function() {
         // this function is where we are actually mounting a react component on runtime inside jsPanel content
         const div = document.createElement('div');
-        const newId = this.id + 'prit';
+        const newId = `${this.id}-${+Date.now()}`;
 
         div.id = newId;
         this.content.append(div);

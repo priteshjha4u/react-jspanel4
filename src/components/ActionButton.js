@@ -1,9 +1,15 @@
 import React from 'react';
 
-const noop = () => {};
 const ActionButton = props => {
   return (
-    <button type="button" className={props.cls || ''} id={props.id} onClick={props.click || noop}>
+    <button
+      type="button"
+      className={props.cls || ''}
+      id={props.id}
+      onClick={e => {
+        props.click(e, props.comp);
+      }}
+    >
       {props.children}
     </button>
   );
