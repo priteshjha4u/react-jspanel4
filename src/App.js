@@ -66,7 +66,7 @@ class App extends Component {
       content: function() {
         // this function is where we are actually mounting a react component on runtime inside jsPanel content
         const div = document.createElement('div');
-        const newId = `${this.id}-${+Date.now()}`;
+        const newId = `${this.id}-node`;
 
         div.id = newId;
         this.content.append(div);
@@ -99,7 +99,7 @@ class App extends Component {
       },
       onbeforeclose: function() {
         // here we make sure to unmount the mounted component properly.
-        const id = this.id + 'prit';
+        const id = `${this.id}-node`;
         const mountedComponentNodeId = document.getElementById(id);
         if (mountedComponentNodeId) {
           // Remove a mounted React component from the DOM and clean up its event handlers and state.
