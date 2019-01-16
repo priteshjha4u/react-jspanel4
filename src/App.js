@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { jsPanel } from '../node_modules/jspanel4/es6module/jspanel';
-import '../node_modules/jspanel4/dist/jspanel.min.css';
+import { jsPanel } from 'jspanel4/es6module/jspanel';
+import 'jspanel4/dist/jspanel.min.css';
 import DisplayName from './components/DisplayName';
 import Countries from './components/Countries';
 import TodoApp from './components/Todo/TodoApp';
 import SampleUsers from './components/SampleUsers';
 import RandomImage from './components/RandomImage';
 import ActionButton from './components/ActionButton';
+// import CreatePortal from './components/createPortal';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,13 +27,7 @@ class App extends Component {
     this.bodyOverflowHidden();
   }
 
-  bodyOverflowHidden = () => {
-    try {
-      document.body.style.overflow = 'hidden';
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
+  bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
 
   // Method that will create jsPanel on demand, right now to keep it simple, we are configuring jsPanel options inside the method statically
   // jsPanel configuration should be passed dynamically
@@ -120,28 +115,26 @@ class App extends Component {
         setTimeout(app.bodyOverflowHidden, 50);
       }
     };
-    // create the jsPanel here
+    // create the jsPanel
     jsPanel.create(options);
   };
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React and jsPanel4 playground</h1>
-        </header>
-        <hr />
-        <p className="App-intro">Here we are trying to combine and show how jsPanel4 can be integrated with React JS without altering jspanel4 library.</p>
-        <hr />
-        <div className="row h-100 justify-content-center align-items-center">
+      <React.Fragment>
+        <div className="row bg-dark text-white shadow p-2">
+          <div className="col-md-12">
+            <h4 className="text-center">jsPanel with react</h4>
+          </div>
+        </div>
+        <div className="row justify-content-center align-items-center mt-4">
           <div className="card">
             <div className="card-body">
               <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Display Name">
                 Display Name
               </ActionButton>
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id=" Countries list">
-                Countries list
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id=" Countries List">
+                Countries List
               </ActionButton>
               <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Todo App">
                 Todo App
@@ -158,7 +151,7 @@ class App extends Component {
         {/* <div className="row">
           <ToastContainer />
         </div> */}
-      </div>
+      </React.Fragment>
     );
   }
 }

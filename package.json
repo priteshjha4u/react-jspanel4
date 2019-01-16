@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
+    "bootstrap": "^4.2.1",
     "gh-pages": "^2.0.1",
     "jspanel4": "^4.2.1",
     "react": "^16.5.2",
