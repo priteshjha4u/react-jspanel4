@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { jsPanel } from 'jspanel4/es6module/jspanel';
@@ -10,7 +10,8 @@ import TodoApp from './components/Todo/TodoApp';
 import SampleUsers from './components/SampleUsers';
 import RandomImage from './components/RandomImage';
 import ActionButton from './components/ActionButton';
-// import CreatePortal from './components/createPortal';
+import { Modal } from './components/modal';
+import CreatePortal from './components/createPortal';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,7 +20,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      panels: {}
+      panels: {},
+      modal: false
     };
   }
 
@@ -40,7 +42,6 @@ class App extends Component {
     if (app.state.panels[action]) {
       return app.state.panels[action].front(() => {
         app.state.panels[action].resize({
-          width: 'auto',
           height: 'auto'
         });
         app.state.panels[action].reposition('center-top 0 20%');
@@ -52,8 +53,8 @@ class App extends Component {
       headerTitle: e.target.id.trim(),
       position: 'center-top 0 20%',
       contentSize: {
-        width: 'auto',
-        height: 'auto'
+        width: `${Math.round(window.innerWidth / 3)}px`,
+        height: `auto`
       },
       contentOverflow: 'auto',
       // animateIn: 'jsPanelFadeIn',
@@ -65,23 +66,6 @@ class App extends Component {
 
         div.id = newId;
         this.content.append(div);
-        const node = document.getElementById(newId);
-
-        if (action === 'Display Name') {
-          ReactDOM.render(<DisplayName name="Pritesh Jha" jsPanel={this} />, node);
-        }
-        if (action === 'Countries List') {
-          ReactDOM.render(<Countries jsPanel={this} />, node);
-        }
-        if (action === 'Todo App') {
-          ReactDOM.render(<TodoApp jsPanel={this} />, node);
-        }
-        if (action === 'Sample Users') {
-          ReactDOM.render(<SampleUsers jsPanel={this} />, node);
-        }
-        if (action === 'Random Image') {
-          ReactDOM.render(<RandomImage jsPanel={this} />, node);
-        }
       },
       callback: function() {
         this.content.style.padding = '10px';
@@ -92,34 +76,69 @@ class App extends Component {
         app.setState({ panels: { ...app.state.panels, [action]: this } });
         app.bodyOverflowHidden();
       },
-      onbeforeclose: function() {
-        // here we make sure to unmount the mounted component properly.
-        const id = `${this.id}-node`;
-        const mountedComponentNodeId = document.getElementById(id);
-        if (mountedComponentNodeId) {
-          // Remove a mounted React component from the DOM and clean up its event handlers and state.
-          ReactDOM.unmountComponentAtNode(mountedComponentNodeId);
-        }
-        return true;
-      },
       onclosed: function() {
         // remove closed jsPanel and its mounted component from state
         const appPanels = app.state.panels;
         if (appPanels[action]) {
           delete appPanels[action];
-          app.setState({ panels: { ...appPanels } });
+          app.setState({ panels: { ...appPanels } }, () => {
+            // console.log('app.bodyOverflowHidden 50');
+            setTimeout(app.bodyOverflowHidden, 50);
+          });
+          // console.log(`jsPanel closed: ${this.id}`);
           /* toast.success(`jsPanel with ID: ${this.id} closed! `, {
 			  position: toast.POSITION.BOTTOM_CENTER
 			}); */
         }
-        setTimeout(app.bodyOverflowHidden, 50);
       }
     };
     // create the jsPanel
     jsPanel.create(options);
   };
 
+  renderInsidePortals() {
+    const panels = this.state.panels;
+    return Object.keys(panels).map(panel => {
+      const node = document.getElementById(`${panels[panel].id}-node`);
+      switch (panel) {
+        case 'Display Name':
+          return (
+            <CreatePortal rootNode={node} key={panel}>
+              <DisplayName name="PKJ" jsPanel={panels[panel]} />
+            </CreatePortal>
+          );
+        case 'Countries List':
+          return (
+            <CreatePortal rootNode={node} key={panel}>
+              <Countries jsPanel={panels[panel]} />
+            </CreatePortal>
+          );
+        case 'Todo App':
+          return (
+            <CreatePortal rootNode={node} key={panel}>
+              <TodoApp jsPanel={panels[panel]} />
+            </CreatePortal>
+          );
+        case 'Sample Users':
+          return (
+            <CreatePortal rootNode={node} key={panel}>
+              <SampleUsers jsPanel={panels[panel]} />
+            </CreatePortal>
+          );
+        case 'Random Image':
+          return (
+            <CreatePortal rootNode={node} key={panel}>
+              <RandomImage jsPanel={panels[panel]} />
+            </CreatePortal>
+          );
+        default:
+          return null;
+      }
+    });
+  }
+
   render() {
+    const jsPanels = Object.keys(this.state.panels);
     return (
       <React.Fragment>
         <div className="row bg-dark text-white shadow p-2">
@@ -145,9 +164,36 @@ class App extends Component {
               <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Random Image">
                 Random Image
               </ActionButton>
+              <ActionButton
+                cls="btn btn-outline-primary ml-2 mb-2"
+                click={() => {
+                  const div = document.createElement('div');
+                  const id = 'Portal-Root';
+                  div.id = id;
+                  document.body.appendChild(div);
+                  this.setState({ modal: true });
+                }}
+              >
+                Modal
+              </ActionButton>
             </div>
           </div>
         </div>
+        {this.state.modal && (
+          <CreatePortal rootNode={document.getElementById('Portal-Root')}>
+            <Modal
+              cb={() => {
+                this.setState({ modal: false }, () => {
+                  const root = document.getElementById('Portal-Root');
+                  root.parentNode.removeChild(root);
+                });
+              }}
+            >
+              <DisplayName name="PKJ" />
+            </Modal>
+          </CreatePortal>
+        )}
+        {jsPanels.length > 0 && this.renderInsidePortals()}
         {/* <div className="row">
           <ToastContainer />
         </div> */}
