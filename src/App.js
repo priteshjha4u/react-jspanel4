@@ -12,6 +12,7 @@ import RandomImage from './components/RandomImage';
 import ActionButton from './components/ActionButton';
 import { Modal } from './components/modal';
 import CreatePortal from './components/createPortal';
+import MouseTracker from './components/mouseTrack';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,12 +22,17 @@ class App extends Component {
     super();
     this.state = {
       panels: {},
-      modal: false
+      modal: false,
+      cat: false
     };
   }
 
   componentDidMount() {
     this.bodyOverflowHidden();
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo);
   }
 
   bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
@@ -58,7 +64,7 @@ class App extends Component {
       },
       contentOverflow: 'auto',
       // animateIn: 'jsPanelFadeIn',
-      onwindowresize: true,
+      // onwindowresize: true,
       content: function() {
         // this function is where we are actually mounting a react component on runtime inside jsPanel content
         const div = document.createElement('div');
@@ -139,6 +145,7 @@ class App extends Component {
 
   render() {
     const jsPanels = Object.keys(this.state.panels);
+    const { cat } = this.state;
     return (
       <React.Fragment>
         <div className="row bg-dark text-white shadow p-2">
@@ -176,6 +183,9 @@ class App extends Component {
               >
                 Modal
               </ActionButton>
+              <ActionButton cls={`btn ml-2 mb-2 ${cat ? 'btn-danger' : 'btn-outline-primary'}`} click={() => this.setState({ cat: !cat })} id="cat">
+                {cat ? 'Cat Off' : 'Call Cat'}
+              </ActionButton>
             </div>
           </div>
         </div>
@@ -194,6 +204,7 @@ class App extends Component {
           </CreatePortal>
         )}
         {jsPanels.length > 0 && this.renderInsidePortals()}
+        {cat && <MouseTracker />}
         {/* <div className="row">
           <ToastContainer />
         </div> */}
