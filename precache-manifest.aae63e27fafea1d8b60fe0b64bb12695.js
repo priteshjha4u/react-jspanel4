@@ -12,27 +12,31 @@ self.__precacheManifest = [
     "url": "/react-jspanel4/static/media/si-glyph-checked.0c04f91b.svg"
   },
   {
+    "revision": "5b3b5966b7adad1391a64a3329559aa2",
+    "url": "/react-jspanel4/static/media/cat.5b3b5966.svg"
+  },
+  {
     "revision": "9335600612c4425b282d",
     "url": "/react-jspanel4/static/js/runtime~main.93356006.js"
   },
   {
-    "revision": "055520f7fbe2efe2730d",
-    "url": "/react-jspanel4/static/js/main.055520f7.chunk.js"
+    "revision": "b46b31125824d6ddd937",
+    "url": "/react-jspanel4/static/js/main.b46b3112.chunk.js"
   },
   {
-    "revision": "34930593dfb5dd13985d",
-    "url": "/react-jspanel4/static/js/1.34930593.chunk.js"
+    "revision": "87fbda45b1a230919843",
+    "url": "/react-jspanel4/static/js/1.87fbda45.chunk.js"
   },
   {
-    "revision": "055520f7fbe2efe2730d",
-    "url": "/react-jspanel4/static/css/main.0b216307.chunk.css"
+    "revision": "b46b31125824d6ddd937",
+    "url": "/react-jspanel4/static/css/main.8f48938c.chunk.css"
   },
   {
-    "revision": "34930593dfb5dd13985d",
-    "url": "/react-jspanel4/static/css/1.29306ede.chunk.css"
+    "revision": "87fbda45b1a230919843",
+    "url": "/react-jspanel4/static/css/1.9e5de4fd.chunk.css"
   },
   {
-    "revision": "06a9776068d4f27f5c69125ece573795",
+    "revision": "f26146b0ba54b68d2574e4c4d2e4cc73",
     "url": "/react-jspanel4/index.html"
   }
 ];
