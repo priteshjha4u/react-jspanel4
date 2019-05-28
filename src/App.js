@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { jsPanel } from 'jspanel4/es6module/jspanel';
+import 'jspanel4/es6module/extensions/modal/jspanel.modal';
 import 'jspanel4/dist/jspanel.min.css';
 import DisplayName from './components/DisplayName';
 import Countries from './components/Countries';
@@ -13,6 +14,7 @@ import ActionButton from './components/ActionButton';
 import { Modal } from './components/modal';
 import CreatePortal from './components/createPortal';
 import MouseTracker from './components/mouseTrack';
+import cat from './assets/icons/cat.svg';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -88,8 +90,7 @@ class App extends Component {
         if (appPanels[action]) {
           delete appPanels[action];
           app.setState({ panels: { ...appPanels } }, () => {
-            // console.log('app.bodyOverflowHidden 50');
-            setTimeout(app.bodyOverflowHidden, 50);
+            setTimeout(app.bodyOverflowHidden);
           });
           // console.log(`jsPanel closed: ${this.id}`);
           /* toast.success(`jsPanel with ID: ${this.id} closed! `, {
@@ -100,6 +101,27 @@ class App extends Component {
     };
     // create the jsPanel
     jsPanel.create(options);
+  };
+
+  createJsPanelModal = () => {
+    // options could be dynamic
+    jsPanel.modal.create({
+      theme: 'primary',
+      headerTitle: 'Modal Example',
+      position: 'center-top 0 20%',
+      contentSize: {
+        width: `${Math.round(window.innerWidth / 3)}px`,
+        height: `auto`
+      },
+      contentOverflow: 'auto',
+      content: function() {
+        const div = document.createElement('div');
+        const newId = `${this.id}-node`;
+        div.id = newId;
+        div.innerHTML = '<p>Modal content...</p><p><img src="' + cat + '" height="200" width="200" /></p>';
+        this.content.append(div);
+      }
+    });
   };
 
   renderInsidePortals() {
@@ -171,16 +193,7 @@ class App extends Component {
               <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Random Image">
                 Random Image
               </ActionButton>
-              <ActionButton
-                cls="btn btn-outline-primary ml-2 mb-2"
-                click={() => {
-                  const div = document.createElement('div');
-                  const id = 'Portal-Root';
-                  div.id = id;
-                  document.body.appendChild(div);
-                  this.setState({ modal: true });
-                }}
-              >
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanelModal}>
                 Modal
               </ActionButton>
               <ActionButton cls={`btn ml-2 mb-2 ${cat ? 'btn-danger' : 'btn-outline-primary'}`} click={() => this.setState({ cat: !cat })} id="cat">
