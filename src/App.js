@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component, lazy, Suspense, Fragment } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { jsPanel } from 'jspanel4/es6module/jspanel';
@@ -20,8 +20,7 @@ class App extends Component {
     super();
     this.state = {
       panels: {},
-      modal: false,
-      cat: false
+      modal: false
     };
   }
 
@@ -36,11 +35,9 @@ class App extends Component {
   bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
 
   // Method that will create jsPanel on demand, right now to keep it simple, we are configuring jsPanel options inside the method statically
-  createJsPanel = e => {
+  createJsPanel = (action, comp) => {
     // keep Main component refrence
     const app = this;
-    // component that needs to be mounted
-    const action = e.target.id.trim();
     // check if its already mounted
     if (app.state.panels[action]) {
       return app.state.panels[action].front(() => {
@@ -160,10 +157,10 @@ class App extends Component {
     const jsPanels = Object.keys(this.state.panels);
     const actionButtonProps = {
       className: 'btn btn-outline-primary ml-2 mb-2',
-      onClick: this.createJsPanel
+      handleClick: this.createJsPanel
     };
     return (
-      <React.Fragment>
+      <Fragment>
         <div className="row bg-dark text-white shadow p-2">
           <div className="col-md-12">
             <h4 className="text-center">jsPanel with react</h4>
@@ -172,29 +169,17 @@ class App extends Component {
         <div className="row justify-content-center align-items-center mt-4">
           <div className="card">
             <div className="card-body">
-              <ActionButton {...actionButtonProps} id="Simple Example">
-                Simple Example
-              </ActionButton>
-              <ActionButton {...actionButtonProps} id=" Countries List">
-                Countries List
-              </ActionButton>
-              <ActionButton {...actionButtonProps} id="Todo App">
-                Todo App
-              </ActionButton>
-              <ActionButton {...actionButtonProps} id="Sample Users">
-                Sample Users
-              </ActionButton>
-              <ActionButton {...actionButtonProps} id="Random Image">
-                Random Image
-              </ActionButton>
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanelModal}>
-                Modal
-              </ActionButton>
+              <ActionButton {...actionButtonProps} title="Simple Example" comp={DisplayName} />
+              <ActionButton {...actionButtonProps} title=" Countries List" comp={Countries} />
+              <ActionButton {...actionButtonProps} title="Todo App" comp={TodoApp} />
+              <ActionButton {...actionButtonProps} title="Sample Users" comp={SampleUsers} />
+              <ActionButton {...actionButtonProps} title="Random Image" comp={RandomImage} />
+              <ActionButton {...actionButtonProps} title="Modal Example" handleClick={this.createJsPanelModal} />
             </div>
           </div>
         </div>
         {jsPanels.length > 0 && this.renderInsidePortals()}
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
