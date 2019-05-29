@@ -17,6 +17,7 @@ class LoadImage extends React.Component {
   componentDidMount() {
     const img = new Image(); // document.createElement('img');
     img.src = this.props.src;
+    img.className = 'img-fluid';
     img.onload = () => this.setState({ loaded: true });
     img.onerror = () => this.setState({ error: true });
     this.image = img;
@@ -35,7 +36,7 @@ class LoadImage extends React.Component {
     if (this.state.error) {
       return <div className="alert alert-info">Error loading image {this.props.src}</div>;
     }
-    return <div ref={el => this.state.loaded && this.image && el.appendChild(this.image)} />;
+    return <div className="card" ref={el => this.state.loaded && this.image && el.appendChild(this.image)} />;
   }
 }
 

@@ -4,12 +4,14 @@ import './App.css';
 import { jsPanel } from 'jspanel4/es6module/jspanel';
 import 'jspanel4/es6module/extensions/modal/jspanel.modal';
 import 'jspanel4/dist/jspanel.min.css';
-import ActionButton from './components/ActionButton';
-import CreatePortal from './components/createPortal';
-import jsPanelOptions from './jsPanelOptions';
 
 // Normal components
 import Clock from './components/clock';
+import ActionButton from './components/ActionButton';
+import CreatePortal from './components/createPortal';
+
+// jsPanel default options
+import jsPanelOptions from './jsPanelOptions';
 
 // lazy loaded components
 const DisplayName = lazy(() => import('./components/DisplayName'));
@@ -111,7 +113,7 @@ class App extends Component {
               <ActionButton {...actionButtonProps} title="Sample Users" comp={SampleUsers} />
               <ActionButton {...actionButtonProps} title="Random Image" comp={RandomImage} />
               <ActionButton {...actionButtonProps} title="Modal Example" comp={Clock} modal={true} />
-              <ActionButton {...actionButtonProps} title="Two Components" comp={[Clock, DisplayName]} />
+              <ActionButton {...actionButtonProps} title="Multiple Components" comp={[Clock, DisplayName, RandomImage, Countries]} />
             </div>
           </div>
         </div>
