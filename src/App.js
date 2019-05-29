@@ -18,7 +18,7 @@ import cat from './assets/icons/cat.svg';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
-// Main/Top level React component
+// Top level React component
 class App extends Component {
   constructor() {
     super();
@@ -40,7 +40,6 @@ class App extends Component {
   bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
 
   // Method that will create jsPanel on demand, right now to keep it simple, we are configuring jsPanel options inside the method statically
-  // jsPanel configuration should be passed dynamically
   createJsPanel = e => {
     // keep Main component refrence
     const app = this;
@@ -92,10 +91,6 @@ class App extends Component {
           app.setState({ panels: { ...appPanels } }, () => {
             setTimeout(app.bodyOverflowHidden);
           });
-          // console.log(`jsPanel closed: ${this.id}`);
-          /* toast.success(`jsPanel with ID: ${this.id} closed! `, {
-			  position: toast.POSITION.BOTTOM_CENTER
-			}); */
         }
       }
     };
@@ -129,7 +124,7 @@ class App extends Component {
     return Object.keys(panels).map(panel => {
       const node = document.getElementById(`${panels[panel].id}-node`);
       switch (panel) {
-        case 'Display Name':
+        case 'Simple Example':
           return (
             <CreatePortal rootNode={node} key={panel}>
               <DisplayName name="PKJ" jsPanel={panels[panel]} />
@@ -178,8 +173,8 @@ class App extends Component {
         <div className="row justify-content-center align-items-center mt-4">
           <div className="card">
             <div className="card-body">
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Display Name">
-                Display Name
+              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Simple Example">
+                Simple Example
               </ActionButton>
               <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id=" Countries List">
                 Countries List
@@ -195,9 +190,6 @@ class App extends Component {
               </ActionButton>
               <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanelModal}>
                 Modal
-              </ActionButton>
-              <ActionButton cls={`btn ml-2 mb-2 ${cat ? 'btn-danger' : 'btn-outline-primary'}`} click={() => this.setState({ cat: !cat })} id="cat">
-                {cat ? 'Cat Off' : 'Call Cat'}
               </ActionButton>
             </div>
           </div>
