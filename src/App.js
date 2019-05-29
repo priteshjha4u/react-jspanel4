@@ -6,6 +6,7 @@ import 'jspanel4/es6module/extensions/modal/jspanel.modal';
 import 'jspanel4/dist/jspanel.min.css';
 import ActionButton from './components/ActionButton';
 import CreatePortal from './components/createPortal';
+import jsPanelOptions from './jsPanelOptions';
 
 // lazy loaded components
 const DisplayName = lazy(() => import('./components/DisplayName'));
@@ -34,61 +35,37 @@ class App extends Component {
 
   bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
 
-  // Method that will create jsPanel on demand, right now to keep it simple, we are configuring jsPanel options inside the method statically
   createJsPanel = (action, comp) => {
     // keep Main component refrence
     const app = this;
     // check if its already mounted
     if (app.state.panels[action]) {
-      return app.state.panels[action].front(() => {
-        app.state.panels[action].resize({
+      return app.state.panels[action]['panel'].front(() => {
+        app.state.panels[action]['panel'].resize({
           height: 'auto'
         });
-        app.state.panels[action].reposition('center-top 0 20%');
+        app.state.panels[action]['panel'].reposition('center-top 0 20%');
       });
     }
 
     const options = {
-      theme: 'primary',
-      headerTitle: e.target.id.trim(),
-      position: 'center-top 0 20%',
-      contentSize: {
-        width: `${Math.round(window.innerWidth / 3)}px`,
-        height: `auto`
-      },
-      contentOverflow: 'auto',
-      // animateIn: 'jsPanelFadeIn',
-      // onwindowresize: true,
-      content: function() {
-        // this function is where we are actually mounting a react component on runtime inside jsPanel content
-        const div = document.createElement('div');
-        const newId = `${this.id}-node`;
-
-        div.id = newId;
-        this.content.append(div);
-      },
-      callback: function() {
-        this.content.style.padding = '10px';
-        const maxHeight = window.innerHeight - (window.innerHeight * 30) / 100;
-        this.content.style.maxHeight = `${maxHeight}px`;
-        this.content.style.maxWidth = `${window.innerWidth - 20}px`;
-        // keep the added jsPanel id in main component state for further use if any.
-        app.setState({ panels: { ...app.state.panels, [action]: this } });
-        app.bodyOverflowHidden();
-      },
-      onclosed: function() {
+      ...jsPanelOptions,
+      headerTitle: action,
+      onclosed: () => {
         // remove closed jsPanel and its mounted component from state
         const appPanels = app.state.panels;
         if (appPanels[action]) {
           delete appPanels[action];
           app.setState({ panels: { ...appPanels } }, () => {
-            setTimeout(app.bodyOverflowHidden);
+            // setTimeout(app.bodyOverflowHidden);
           });
         }
       }
     };
     // create the jsPanel
-    jsPanel.create(options);
+    const panel = jsPanel.create(options);
+    // save panel and compponent (this will be mounted later inside panel body) reference inside state
+    app.setState({ panels: { ...app.state.panels, [action]: { panel, comp } } });
   };
 
   createJsPanelModal = () => {
@@ -106,50 +83,24 @@ class App extends Component {
         const div = document.createElement('div');
         const newId = `${this.id}-node`;
         div.id = newId;
-        div.innerHTML = '<p>Modal content...</p><p><img src="' + cat + '" height="200" width="200" /></p>';
+        div.innerHTML = '<p>Modal content...</p>';
         this.content.append(div);
       }
     });
   };
 
-  renderInsidePortals() {
+  renderJsPanlesInsidePortal() {
     const panels = this.state.panels;
-    return Object.keys(panels).map(panel => {
-      const node = document.getElementById(`${panels[panel].id}-node`);
-      switch (panel) {
-        case 'Simple Example':
-          return (
-            <CreatePortal rootNode={node} key={panel}>
-              <DisplayName name="PKJ" jsPanel={panels[panel]} />
-            </CreatePortal>
-          );
-        case 'Countries List':
-          return (
-            <CreatePortal rootNode={node} key={panel}>
-              <Countries jsPanel={panels[panel]} />
-            </CreatePortal>
-          );
-        case 'Todo App':
-          return (
-            <CreatePortal rootNode={node} key={panel}>
-              <TodoApp jsPanel={panels[panel]} />
-            </CreatePortal>
-          );
-        case 'Sample Users':
-          return (
-            <CreatePortal rootNode={node} key={panel}>
-              <SampleUsers jsPanel={panels[panel]} />
-            </CreatePortal>
-          );
-        case 'Random Image':
-          return (
-            <CreatePortal rootNode={node} key={panel}>
-              <RandomImage jsPanel={panels[panel]} />
-            </CreatePortal>
-          );
-        default:
-          return null;
-      }
+    return Object.keys(panels).map(data => {
+      const jsPanel = data.panel;
+      const Comp = data.comp;
+      const node = document.getElementById(`${jsPanel.id}-node`);
+      if (!Comp) return null;
+      return (
+        <CreatePortal rootNode={node} key={jsPanel.id}>
+          <Comp jsPanel={jsPanel} />
+        </CreatePortal>
+      );
     });
   }
 
@@ -178,7 +129,7 @@ class App extends Component {
             </div>
           </div>
         </div>
-        {jsPanels.length > 0 && this.renderInsidePortals()}
+        {jsPanels.length > 0 && this.renderJsPanlesInsidePortal()}
       </Fragment>
     );
   }

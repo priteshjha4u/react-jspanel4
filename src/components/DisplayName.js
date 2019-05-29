@@ -1,7 +1,7 @@
 import React from 'react';
 
-const DisplayName = props => {
-  return <p>{props.name}</p>;
+const DisplayName = ({ name = 'Some functional component here' }) => {
+  return <p>{name}</p>;
 };
 
 export default DisplayName;
