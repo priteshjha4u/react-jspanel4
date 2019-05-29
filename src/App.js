@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { jsPanel } from 'jspanel4/es6module/jspanel';
 import 'jspanel4/es6module/extensions/modal/jspanel.modal';
 import 'jspanel4/dist/jspanel.min.css';
-import DisplayName from './components/DisplayName';
-import Countries from './components/Countries';
-import TodoApp from './components/Todo/TodoApp';
-import SampleUsers from './components/SampleUsers';
-import RandomImage from './components/RandomImage';
 import ActionButton from './components/ActionButton';
 import CreatePortal from './components/createPortal';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+
+// lazy loaded components
+const DisplayName = lazy(() => import('./components/DisplayName'));
+const Countries = lazy(() => import('./components/Countries'));
+const TodoApp = lazy(() => import('./components/Todo/TodoApp'));
+const SampleUsers = lazy(() => import('./components/SampleUsers'));
+const RandomImage = lazy(() => import('./components/RandomImage'));
 
 // Top level React component
 class App extends Component {
@@ -158,6 +158,10 @@ class App extends Component {
 
   render() {
     const jsPanels = Object.keys(this.state.panels);
+    const actionButtonProps = {
+      className: 'btn btn-outline-primary ml-2 mb-2',
+      onClick: this.createJsPanel
+    };
     return (
       <React.Fragment>
         <div className="row bg-dark text-white shadow p-2">
@@ -168,19 +172,19 @@ class App extends Component {
         <div className="row justify-content-center align-items-center mt-4">
           <div className="card">
             <div className="card-body">
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Simple Example">
+              <ActionButton {...actionButtonProps} id="Simple Example">
                 Simple Example
               </ActionButton>
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id=" Countries List">
+              <ActionButton {...actionButtonProps} id=" Countries List">
                 Countries List
               </ActionButton>
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Todo App">
+              <ActionButton {...actionButtonProps} id="Todo App">
                 Todo App
               </ActionButton>
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Sample Users">
+              <ActionButton {...actionButtonProps} id="Sample Users">
                 Sample Users
               </ActionButton>
-              <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanel} id="Random Image">
+              <ActionButton {...actionButtonProps} id="Random Image">
                 Random Image
               </ActionButton>
               <ActionButton cls="btn btn-outline-primary ml-2 mb-2" click={this.createJsPanelModal}>
