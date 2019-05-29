@@ -28,10 +28,6 @@ class App extends Component {
     };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
-  }
-
   createJsPanel = (action, comp, modal = false) => {
     // keep Main component refrence
     const app = this;
@@ -72,9 +68,22 @@ class App extends Component {
       if (!Comp) return null;
       return (
         <CreatePortal rootNode={node} key={jsPanel.id}>
-          <Suspense fallback={<div className="alert alert-info">Loading...</div>}>
-            <Comp jsPanel={jsPanel} />
-          </Suspense>
+          {Array.isArray(Comp) ? (
+            Comp.map(C => (
+              <Suspense
+                key={Math.random()
+                  .toString()
+                  .substr(2)}
+                fallback={<div className="alert alert-info">Loading...</div>}
+              >
+                <C jsPanel={jsPanel} />
+              </Suspense>
+            ))
+          ) : (
+            <Suspense fallback={<div className="alert alert-info">Loading...</div>}>
+              <Comp jsPanel={jsPanel} />
+            </Suspense>
+          )}
         </CreatePortal>
       );
     });

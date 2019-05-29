@@ -2,10 +2,12 @@ import React from 'react';
 
 const DisplayName = ({ name = 'Some functional component here', jsPanel }) => {
   return (
-    <>
-      <p>{name}</p>
-      <p>This jaPanel id is {jsPanel && jsPanel.id}</p>
-    </>
+    <div className="card">
+      <div className="card-body text-center">
+        <h3>{name}</h3>
+        <h4>This jsPanel id is {jsPanel && jsPanel.id}</h4>
+      </div>
+    </div>
   );
 };
 
