@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense, Fragment } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { jsPanel } from 'jspanel4/es6module/jspanel';
@@ -37,7 +37,7 @@ class App extends Component {
 
   bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
 
-  createJsPanel = (action, comp, lazyLoad) => {
+  createJsPanel = (action, comp, lazyLoad, modal = false) => {
     // keep Main component refrence
     const app = this;
     // check if its already mounted, bring it to front
@@ -62,39 +62,18 @@ class App extends Component {
         }
       }
     };
-    // create the jsPanel
-    const panel = jsPanel.create(options);
+    // create jsPanel
+    const panel = modal ? jsPanel.modal.create(options) : jsPanel.create(options);
     // save panel and compponent (this will be mounted later inside panel body) reference inside state
     app.setState({ panels: { ...app.state.panels, [action]: { panel, comp, lazyLoad } } });
   };
 
-  createJsPanelModal = () => {
-    // options could be dynamic
-    jsPanel.modal.create({
-      theme: 'primary',
-      headerTitle: 'Modal Example',
-      position: 'center-top 0 20%',
-      contentSize: {
-        width: `${Math.round(window.innerWidth / 3)}px`,
-        height: `auto`
-      },
-      contentOverflow: 'auto',
-      content: function() {
-        const div = document.createElement('div');
-        const newId = `${this.id}-node`;
-        div.id = newId;
-        div.innerHTML = '<p>Modal content...</p>';
-        this.content.append(div);
-      }
-    });
-  };
-
   renderJsPanlesInsidePortal() {
     const panels = this.state.panels;
-    return Object.keys(panels).map(data => {
-      const jsPanel = data.panel;
-      const Comp = data.comp;
-      const lazyLoad = data.lazyLoad;
+    return Object.keys(panels).map(action => {
+      const jsPanel = panels[action].panel;
+      const Comp = panels[action].comp;
+      const lazyLoad = panels[action].lazyLoad;
       const node = document.getElementById(`${jsPanel.id}-node`);
       if (!Comp) return null;
       const child = lazyLoad ? (
@@ -120,7 +99,7 @@ class App extends Component {
       lazyLoad: true
     };
     return (
-      <Fragment>
+      <div className="container-fluid">
         <div className="row bg-dark text-white shadow p-2">
           <div className="col-md-12">
             <h4 className="text-center">jsPanel with react</h4>
@@ -134,12 +113,12 @@ class App extends Component {
               <ActionButton {...actionButtonProps} title="Todo App" comp={TodoApp} />
               <ActionButton {...actionButtonProps} title="Sample Users" comp={SampleUsers} />
               <ActionButton {...actionButtonProps} title="Random Image" comp={RandomImage} />
-              <ActionButton {...actionButtonProps} title="Modal Example" handleClick={this.createJsPanelModal} />
+              <ActionButton {...actionButtonProps} title="Modal Example" comp={SampleUsers} modal={true} />
             </div>
           </div>
         </div>
         {jsPanels.length > 0 && this.renderJsPanlesInsidePortal()}
-      </Fragment>
+      </div>
     );
   }
 }

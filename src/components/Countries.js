@@ -12,7 +12,7 @@ class Countries extends Component {
         this.timeout = null;
       }
       this.setState({ list: ['India', 'USA', 'China', 'Thailand', 'Indonesia', 'Netherlands'] });
-    }, 4000);
+    }, 2000);
   }
 
   componentWillUnmount() {

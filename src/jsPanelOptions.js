@@ -8,17 +8,17 @@ export default {
   },
   contentOverflow: 'auto',
   onwindowresize: false,
-  content: () => {
+  content: panel => {
     const div = document.createElement('div');
-    const newId = `${this.id}-node`;
+    const newId = `${panel.id}-node`;
     div.id = newId;
-    this.content.append(div);
+    panel.content.append(div);
   },
-  callback: () => {
-    this.content.style.padding = '10px';
+  callback: panel => {
+    panel.content.style.padding = '10px';
     const maxHeight = window.innerHeight - (window.innerHeight * 30) / 100;
-    this.content.style.maxHeight = `${maxHeight}px`;
-    this.content.style.maxWidth = `${window.innerWidth - 20}px`;
+    panel.content.style.maxHeight = `${maxHeight}px`;
+    panel.content.style.maxWidth = `${window.innerWidth - 20}px`;
   },
   onclosed: () => {}
 };
