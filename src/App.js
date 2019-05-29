@@ -8,6 +8,8 @@ import ActionButton from './components/ActionButton';
 import CreatePortal from './components/createPortal';
 import jsPanelOptions from './jsPanelOptions';
 
+// Normal components
+
 // lazy loaded components
 const DisplayName = lazy(() => import('./components/DisplayName'));
 const Countries = lazy(() => import('./components/Countries'));
@@ -38,7 +40,7 @@ class App extends Component {
   createJsPanel = (action, comp, lazyLoad) => {
     // keep Main component refrence
     const app = this;
-    // check if its already mounted
+    // check if its already mounted, bring it to front
     if (app.state.panels[action]) {
       return app.state.panels[action]['panel'].front(() => {
         app.state.panels[action]['panel'].resize({
@@ -56,9 +58,7 @@ class App extends Component {
         const appPanels = app.state.panels;
         if (appPanels[action]) {
           delete appPanels[action];
-          app.setState({ panels: { ...appPanels } }, () => {
-            // setTimeout(app.bodyOverflowHidden);
-          });
+          app.setState({ panels: { ...appPanels } });
         }
       }
     };
