@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { jsPanel } from 'jspanel4/es6module/jspanel';
@@ -11,10 +10,7 @@ import TodoApp from './components/Todo/TodoApp';
 import SampleUsers from './components/SampleUsers';
 import RandomImage from './components/RandomImage';
 import ActionButton from './components/ActionButton';
-import { Modal } from './components/modal';
 import CreatePortal from './components/createPortal';
-import MouseTracker from './components/mouseTrack';
-import cat from './assets/icons/cat.svg';
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -162,7 +158,6 @@ class App extends Component {
 
   render() {
     const jsPanels = Object.keys(this.state.panels);
-    const { cat } = this.state;
     return (
       <React.Fragment>
         <div className="row bg-dark text-white shadow p-2">
@@ -194,25 +189,7 @@ class App extends Component {
             </div>
           </div>
         </div>
-        {this.state.modal && (
-          <CreatePortal rootNode={document.getElementById('Portal-Root')}>
-            <Modal
-              cb={() => {
-                this.setState({ modal: false }, () => {
-                  const root = document.getElementById('Portal-Root');
-                  root.parentNode.removeChild(root);
-                });
-              }}
-            >
-              <DisplayName name="PKJ" />
-            </Modal>
-          </CreatePortal>
-        )}
         {jsPanels.length > 0 && this.renderInsidePortals()}
-        {cat && <MouseTracker />}
-        {/* <div className="row">
-          <ToastContainer />
-        </div> */}
       </React.Fragment>
     );
   }
