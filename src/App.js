@@ -35,7 +35,7 @@ class App extends Component {
 
   bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
 
-  createJsPanel = (action, comp) => {
+  createJsPanel = (action, comp, lazyLoad) => {
     // keep Main component refrence
     const app = this;
     // check if its already mounted
@@ -65,7 +65,7 @@ class App extends Component {
     // create the jsPanel
     const panel = jsPanel.create(options);
     // save panel and compponent (this will be mounted later inside panel body) reference inside state
-    app.setState({ panels: { ...app.state.panels, [action]: { panel, comp } } });
+    app.setState({ panels: { ...app.state.panels, [action]: { panel, comp, lazyLoad } } });
   };
 
   createJsPanelModal = () => {
@@ -94,11 +94,19 @@ class App extends Component {
     return Object.keys(panels).map(data => {
       const jsPanel = data.panel;
       const Comp = data.comp;
+      const lazyLoad = data.lazyLoad;
       const node = document.getElementById(`${jsPanel.id}-node`);
       if (!Comp) return null;
+      const child = lazyLoad ? (
+        <Suspense fallback={<div className="alert alert-info">Loading...</div>}>
+          <Comp jsPanel={jsPanel} />
+        </Suspense>
+      ) : (
+        <Comp jsPanel={jsPanel} />
+      );
       return (
         <CreatePortal rootNode={node} key={jsPanel.id}>
-          <Comp jsPanel={jsPanel} />
+          {child}
         </CreatePortal>
       );
     });
@@ -108,7 +116,8 @@ class App extends Component {
     const jsPanels = Object.keys(this.state.panels);
     const actionButtonProps = {
       className: 'btn btn-outline-primary ml-2 mb-2',
-      handleClick: this.createJsPanel
+      handleClick: this.createJsPanel,
+      lazyLoad: true
     };
     return (
       <Fragment>
