@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{59:function(e,n,a){"use strict";a.r(n);var t=a(0),c=a.n(t);n.default=function(e){var n=e.name,a=void 0===n?"Some functional component here":n,t=e.jsPanel;return c.a.createElement("div",{className:"card"},c.a.createElement("div",{className:"card-body text-center"},c.a.createElement("h3",null,a),c.a.createElement("h4",null,"This jsPanel id is ",t&&t.id)))}}}]);
+//# sourceMappingURL=6.0bf405b8.chunk.js.map
