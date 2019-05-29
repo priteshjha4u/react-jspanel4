@@ -9,6 +9,7 @@ import CreatePortal from './components/createPortal';
 import jsPanelOptions from './jsPanelOptions';
 
 // Normal components
+import Clock from './components/clock';
 
 // lazy loaded components
 const DisplayName = lazy(() => import('./components/DisplayName'));
@@ -27,17 +28,11 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    this.bodyOverflowHidden();
-  }
-
   componentDidCatch(error, errorInfo) {
     console.log(error, errorInfo);
   }
 
-  bodyOverflowHidden = () => (document.body.style.overflow = 'hidden');
-
-  createJsPanel = (action, comp, lazyLoad, modal = false) => {
+  createJsPanel = (action, comp, modal = false) => {
     // keep Main component refrence
     const app = this;
     // check if its already mounted, bring it to front
@@ -65,7 +60,7 @@ class App extends Component {
     // create jsPanel
     const panel = modal ? jsPanel.modal.create(options) : jsPanel.create(options);
     // save panel and compponent (this will be mounted later inside panel body) reference inside state
-    app.setState({ panels: { ...app.state.panels, [action]: { panel, comp, lazyLoad } } });
+    app.setState({ panels: { ...app.state.panels, [action]: { panel, comp } } });
   };
 
   renderJsPanlesInsidePortal() {
@@ -73,19 +68,13 @@ class App extends Component {
     return Object.keys(panels).map(action => {
       const jsPanel = panels[action].panel;
       const Comp = panels[action].comp;
-      const lazyLoad = panels[action].lazyLoad;
       const node = document.getElementById(`${jsPanel.id}-node`);
       if (!Comp) return null;
-      const child = lazyLoad ? (
-        <Suspense fallback={<div className="alert alert-info">Loading...</div>}>
-          <Comp jsPanel={jsPanel} />
-        </Suspense>
-      ) : (
-        <Comp jsPanel={jsPanel} />
-      );
       return (
         <CreatePortal rootNode={node} key={jsPanel.id}>
-          {child}
+          <Suspense fallback={<div className="alert alert-info">Loading...</div>}>
+            <Comp jsPanel={jsPanel} />
+          </Suspense>
         </CreatePortal>
       );
     });
@@ -95,8 +84,7 @@ class App extends Component {
     const jsPanels = Object.keys(this.state.panels);
     const actionButtonProps = {
       className: 'btn btn-outline-primary ml-2 mb-2',
-      handleClick: this.createJsPanel,
-      lazyLoad: true
+      handleClick: this.createJsPanel
     };
     return (
       <div className="container-fluid">
@@ -113,7 +101,8 @@ class App extends Component {
               <ActionButton {...actionButtonProps} title="Todo App" comp={TodoApp} />
               <ActionButton {...actionButtonProps} title="Sample Users" comp={SampleUsers} />
               <ActionButton {...actionButtonProps} title="Random Image" comp={RandomImage} />
-              <ActionButton {...actionButtonProps} title="Modal Example" comp={SampleUsers} modal={true} />
+              <ActionButton {...actionButtonProps} title="Modal Example" comp={Clock} modal={true} />
+              <ActionButton {...actionButtonProps} title="Two Components" comp={[Clock, DisplayName]} />
             </div>
           </div>
         </div>
