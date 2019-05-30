@@ -1,8 +1,8 @@
 import React from 'react';
 
 const RandomImage = () => {
-  const width = Math.floor(Math.random() * 100 + 450);
-  const height = Math.floor(Math.random() * 100 + 300);
+  const width = Math.floor(Math.random() * 100 + Math.round(window.innerWidth / 1.2));
+  const height = Math.floor(Math.random() * 100 + Math.round(window.innerHeight / 1.8));
   const src = `https://picsum.photos/${width}/${height}`;
   return <LoadImage src={src} />;
 };

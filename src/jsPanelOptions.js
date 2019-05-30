@@ -3,7 +3,7 @@ export default {
   headerTitle: 'Default Title',
   position: 'center-top 0 20%',
   contentSize: {
-    width: `${Math.round(window.innerWidth / 3)}px`,
+    width: `${Math.round(window.innerWidth / 1.2)}px`,
     height: `auto`
   },
   contentOverflow: 'auto',
