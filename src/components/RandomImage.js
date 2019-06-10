@@ -36,7 +36,7 @@ class LoadImage extends React.Component {
     if (this.state.error) {
       return <div className="alert alert-info">Error loading image {this.props.src}</div>;
     }
-    return <div className="card" ref={el => this.state.loaded && this.image && el.appendChild(this.image)} />;
+    return <div className="card" ref={el => this.state.loaded && this.image && el && el.appendChild(this.image)} />;
   }
 }
 

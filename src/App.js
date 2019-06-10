@@ -66,17 +66,13 @@ class App extends Component {
       const jsPanel = panels[action].panel;
       const Comp = panels[action].comp;
       const node = document.getElementById(`${jsPanel.id}-node`);
+      let counter = 0;
       if (!Comp) return null;
       return (
         <CreatePortal rootNode={node} key={jsPanel.id}>
           {Array.isArray(Comp) ? (
             Comp.map(C => (
-              <Suspense
-                key={Math.random()
-                  .toString()
-                  .substr(2)}
-                fallback={<div className="alert alert-info">Loading...</div>}
-              >
+              <Suspense key={`${jsPanel.id}-${counter++}`} fallback={<div className="alert alert-info">Loading...</div>}>
                 <C jsPanel={jsPanel} />
               </Suspense>
             ))
