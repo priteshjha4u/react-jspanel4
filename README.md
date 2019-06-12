@@ -41,8 +41,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      panels: {},
-      modal: false
+      panels: {}
     };
   }
 
@@ -83,17 +82,13 @@ class App extends Component {
       const jsPanel = panels[action].panel;
       const Comp = panels[action].comp;
       const node = document.getElementById(`${jsPanel.id}-node`);
+      let counter = 0;
       if (!Comp) return null;
       return (
         <CreatePortal rootNode={node} key={jsPanel.id}>
           {Array.isArray(Comp) ? (
             Comp.map(C => (
-              <Suspense
-                key={Math.random()
-                  .toString()
-                  .substr(2)}
-                fallback={<div className="alert alert-info">Loading...</div>}
-              >
+              <Suspense key={`${jsPanel.id}-${counter++}`} fallback={<div className="alert alert-info">Loading...</div>}>
                 <C jsPanel={jsPanel} />
               </Suspense>
             ))
@@ -120,7 +115,7 @@ class App extends Component {
             <h4 className="text-center">jsPanel with react</h4>
           </div>
         </div>
-        <div className="row justify-content-center align-items-center mt-4">
+        <div className="row justify-content-center mt-4">
           <div className="card">
             <div className="card-body">
               <ActionButton {...actionButtonProps} title="Simple Example" comp={DisplayName} />
